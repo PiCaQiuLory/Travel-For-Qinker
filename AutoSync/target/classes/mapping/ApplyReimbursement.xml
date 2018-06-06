@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.mapper.ApplyReimbursementMapper">
+	
+	<select id="getAllForUser" parameterType="int" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select ar.id,event,date_format(apply_time,'%Y-%c-%d') as applyTimeStr,cost,user_id as userId,auditor_id as auditorId,date_format(auditor_time,'%Y-%c-%d') as auditorDateStr,
+		status,category from apply_reimbursement as ar  where user_id = #{id} order by apply_time DESC
+	</select>
+	
+	<select id="getNickName" parameterType="int" resultType="String">
+		select nickname from user_t where id = #{id}
+	</select>
+	
+	<select id="getAllApplyWithAuditor"  resultType="com.ss.pojo.vo.ApplyReimbursement" parameterType="com.ss.pojo.vo.ApplyReimbursement">
+		select ar.id,event,date_format(apply_time,'%Y-%c-%d') as applyTimeStr,cost,user_id as userId,auditor_id as auditorId,
+		date_format(auditor_time,'%Y-%c-%d') as auditorDateStr,category,
+		status,ut.nickname as nickName from apply_reimbursement as ar inner join user_t as ut on 
+		ar.user_id = ut.id where status=#{status} order by apply_time DESC
+	</select>
+	<insert id="addOneEvent" parameterType="com.ss.pojo.vo.ApplyReimbursement">
+		insert into apply_reimbursement(event,apply_time,cost,user_id,status,category) values(#{event,jdbcType=VARCHAR},
+		#{applyTime,jdbcType=TIMESTAMP},#{cost,jdbcType=DECIMAL},#{userId,jdbcType=INTEGER},#{status,jdbcType=VARCHAR},
+		#{category,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="applyAndJudy" parameterType="com.ss.pojo.vo.ApplyReimbursement">
+		update apply_reimbursement set
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="auditorDate !=null">
+			auditor_time = #{auditorDate},
+		</if>
+		<if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="auditorId != null">
+			auditor_id = #{auditorId}
+		</if>
+		  where id = #{id}
+	</update>
+	
+	<select id="getNumber" resultType="int">
+		select count(id) from apply_reimbursement where status = "审核中"
+	</select>
+	<select id="searchByUser" parameterType="int" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select user_id as userId,ut.nickname as nickName,SUM(cost) as cost,status from apply_reimbursement inner join user_t as ut on user_id = ut.id where user_id=#{userId} and status ='审核中'
+		 group by user_id order by apply_time desc
+	</select>
+	<select id="selectByGroupWithNoJudy" resultType="com.ss.pojo.vo.ApplyReimbursement" parameterType="com.ss.pojo.vo.ApplyReimbursement">
+		select user_id as userId,ut.nickname as nickName,status,SUM(cost) as cost from apply_reimbursement inner join
+		 user_t as ut on user_id = ut.id where  status =#{status} GROUP BY user_id order by apply_time desc
+	</select>
+	<select id="selectByGroupWithNoJudyUserItem" parameterType="com.ss.pojo.vo.ApplyReimbursement" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select user_id as userId,are.id as id,ut.nickname as nickName,event,apply_time,date_format(apply_time,'%Y-%c-%d') as applyTimeStr,
+		cost,status,category from apply_reimbursement as are inner join user_t as ut on user_id = ut.id where user_id=#{userId} and status =#{status} order by apply_time desc
+	</select>
+	<select id="searchByUserJudy" parameterType="int" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select user_id as userId,ut.nickname as nickName,sum(cost) as cost,status from apply_reimbursement inner join user_t as ut on user_id = ut.id where user_id=#{userId} and status ='已付款' group by user_id order by apply_time desc
+	</select>
+	
+	<update id="judyList">
+		update apply_reimbursement set status='已付款' where user_id in
+		(
+			<foreach collection="list" index="index" item="item" separator=",">
+				#{item.userId}
+			</foreach>
+		)
+		and status = '待付款'
+	</update>
+	<update id="judyListForAuditor">
+		update apply_reimbursement set status='待付款' where user_id in
+		(
+			<foreach collection="list" index="index" item="item" separator=",">
+				#{item.userId}
+			</foreach>
+		)
+		and status = '审核中'
+	</update>
+	
+	<select id="selectByGroupWithNoJudyForExcel" parameterType="com.ss.pojo.POIDatePojo" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select temp.id,nickName,event,applyTimeStr,cost,status,ud.department FROM (select user_id as userId,are.id as id,
+		ut.nickname as nickName,event,date_format(apply_time,'%Y-%c-%d') as applyTimeStr,cost,ut.department_id,status,
+		category from apply_reimbursement as are inner join user_t as ut on user_id = ut.id where user_id=#{userId} and status =#{status} 
+		and apply_time &gt; #{startDate} and apply_time &lt; #{endDate}) as temp INNER JOIN user_department as ud on temp.department_id = ud.id
+	</select>
+	<select id="selectByGroupWithMonth" parameterType="com.ss.pojo.POIDatePojo" resultType="com.ss.pojo.vo.ApplyReimbursement">
+		select u.nickname as nickName,SUM(cost) as cost from apply_reimbursement as ar INNER JOIN user_t as u on ar.user_id = u.id WHERE `status` = '已付款' and apply_time &gt; #{startDate} and apply_time &lt; #{endDate} GROUP BY user_id
+	</select>
+</mapper>

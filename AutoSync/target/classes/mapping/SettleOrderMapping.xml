@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.mapper.SettleOrderMapper">
+	<select id="getAllSettleOrder" resultType="com.ss.pojo.SettleOrder">
+		select incomeNew as subtotal,itemNumber,ot.id,manFlat,nickname from order_t as ot JOIN user_t 
+		as ut on ot.manNameId = ut.id where createDate &gt;= "2018-02-14" and status = 'FINISH'
+	</select>
+	
+	<select id="getAllSettleOrderWithEnd" resultType="com.ss.pojo.SettleOrder">
+		select incomeNew as subtotal,itemNumber,manFlat from order_t where createDate &gt;= '2018-02-01' and createDate &lt;= '2018-04-01'
+	</select>
+	
+	<select id="getLengthByItemNumber" resultType="Integer" parameterType="Integer">
+		select count(id) from order_cost_item where order_id = #{orderId}
+	</select>
+	
+	<select id="getOrderByTime" parameterType="java.util.Date" resultType="com.ss.pojo.SettleOrder">
+		select itemNumber from order_t where createDate &gt; #{startDate}
+	</select>
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.mapper.OrderApplyItemMapper">
+	
+	<insert id="insertOrderItems" parameterType="java.util.ArrayList">
+		insert into order_apply_item(apply_time,total,type,category,itemNumber,user_id,use_date,order_merge_id,orderNo,order_item_id)
+		values
+		<foreach collection="list" index="index" item="item" separator=",">
+			(
+				#{item.applyTime,jdbcType=TIMESTAMP},#{item.total,jdbcType=DECIMAL},#{item.type},#{item.category},
+				#{item.itemNumber},#{item.userId},#{item.useDate,jdbcType=TIMESTAMP},#{item.orderMergeId},#{item.orderNo},#{item.orderItemId}
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insertOrderMerge" parameterType="com.ss.pojo.OrderApplyMerge">
+		<selectKey resultType="int" order="AFTER" keyProperty="id">
+          SELECT LAST_INSERT_ID()
+     	</selectKey>
+		insert into order_apply_merge(mergeNumber,name,subTotal,merge_user_id,merge_time) values (#{mergeNumber,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{subTotal,jdbcType=DECIMAL},#{mergeUserId,jdbcType=INTEGER},#{mergeTime,jdbcType=TIMESTAMP})
+	</insert>
+	<select id="getAllOrderItems" resultType="com.ss.pojo.OrderApplyMerge" parameterType="com.ss.pojo.OrderApplyMerge">
+		select oam.id,mergeNumber,name,bill_status as billStatus,bill_cost as billCost,bill_time as billTime,
+		date_format(bill_time,'%Y-%c-%d') as billTimeStr,subTotal,pay_way,payNumber,
+		date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,merge_user_id as mergeUserId,
+		date_format(merge_time,'%Y-%c-%d %h:%i:%s') as mergeTimeStr,status,ut.nickname as nickname 
+		from order_apply_merge as oam inner join user_t as ut on merge_user_id = ut.id where status = #{status} order by merge_time DESC
+	</select>
+	<delete id="deleteMergeById" parameterType="int">
+		delete from order_apply_merge where id = #{id}
+	</delete>
+	
+	<delete id="deleteItemsMerge">
+		delete from order_apply_item where id in
+		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<delete id="robackMerge" parameterType="int">
+		delete from order_apply_item where order_merge_id = #{id}
+	</delete>
+	<select id="selectCountMergeItems" parameterType="int" resultType="int">
+		select count(order_merge_id) from order_apply_item where order_merge_id = #{id}
+	</select>
+	
+	<select id="getItemsByMergeId" parameterType="int" resultType="com.ss.pojo.OrderApplyItem">
+		select oai.id,date_format(apply_time,'%Y-%c-%d') as applyTimeStr,apply_time as applyTime,total,type,category,itemNumber,user_id as userId,nickname,date_format(use_date,'%Y-%c-%d') as useDateStr,use_date as useDate,order_merge_id as orderMergeId,orderNo,order_item_id as orderItemId from
+		order_apply_item as oai inner join user_t as ut on oai.user_id = ut.id where order_merge_id = #{id} order by apply_time DESC
+	</select>
+	<select id="getMergeById" parameterType="int" resultType="com.ss.pojo.OrderApplyMerge">
+		select id,mergeNumber,name,status from order_apply_merge where id = #{id} order by merge_time DESC
+	</select>
+	<update id="updateMergeTotal" parameterType="com.ss.pojo.OrderApplyItem">
+		update order_apply_merge set subTotal = subTotal - #{total} where id = #{orderMergeId}
+	</update>
+	
+	<update id="judyOrderMerge" parameterType="com.ss.pojo.vo.OrderItemVo">
+		update order_apply_merge set status='已付款',pay_way=#{payWay},pay_time=#{payTime},payNumber=#{payNumber},provider_id = #{provider_id},auditor_id=#{auditorId} where id = #{id}
+	</update>
+	
+	<update id="updateOrderItemById">
+		update order_item set paystatus = '已付款' where id in
+		(
+			<foreach collection="list" index="index" item="item" separator=",">
+				#{item.orderItemId}
+			</foreach>
+		)
+	</update>
+	<select id="selectFromOrderApplyByMany" resultType="com.ss.pojo.vo.OrderItemVo">
+  	select oa.id,order_item_id as orderItemId,status,category,date_format(apply_time,'%Y-%c-%d %h:%i:%s') as applyTimeStr,total,type,orderNo,
+  	name,itemNumber,user_id,ut.nickname as userNickName,date_format(use_date,'%Y-%c-%d %h:%i:%s') as useDateStr from order_apply 
+  	as oa inner join user_t as ut on user_id = ut.id where true
+  	<if test="itemNumber !=null and itemNumber != ''">
+  		and itemNumber like #{itemNumber}
+  	</if>
+  	<if test="name !=null and name!=''">
+  		and name like #{name}
+  	</if>
+  	<if test="orderNo !=null and orderNo != ''">
+  		and orderNo like #{orderNo}
+  	</if>
+  	<if test="userId >0">
+  		and user_id = #{userId}
+  	</if>
+  	and status = '审核中'
+  	order by apply_time DESC
+  </select>
+  <select id="selectFromOrderApplyMergeByMany" resultType="com.ss.pojo.OrderApplyMerge">
+  	select ut.id,mergeNumber,oam.name,subTotal,date_format(merge_time,'%Y-%c-%d %h:%i:%s') as mergeTimeStr,date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,payNumber,pay_way,status,merge_user_id as mergeUserId,ut.nickname as nickname from order_apply_merge as oam inner join user_t as ut on oam.merge_user_id = ut.id where true
+  	<if test="mergeNumber !=null and mergeNumber != ''">
+  		and mergeNumber like #{mergeNumber}
+  	</if>
+  	<if test="name !=null and name!=''">
+  		and name like #{name}
+  	</if>
+  	<if test="status !=null and status != ''">
+  		and status = #{status}
+  	</if>
+  	<if test="mergeUserId >0">
+  		and merge_user_id = #{mergeUserId}
+  	</if>
+  	order by merge_time DESC
+  </select>
+  <update id="updateOrderMergeBill" parameterType="com.ss.pojo.OrderApplyMerge">
+  	update order_apply_merge set bill_cost=#{billCost},bill_status=#{billStatus},bill_time=#{billTime} where id=#{id}
+  </update>
+</mapper>
+

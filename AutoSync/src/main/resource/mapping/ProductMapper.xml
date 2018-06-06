@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.IProductDao" >
+   <resultMap id="BaseResultMap" type="com.ss.pojo.OutputTemlate" >
+   
+    <result column="package_name" property="packageName" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="target_source" property="targetSource" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="target_product_id" property="targetProductId" jdbcType="VARCHAR" />
+    <result column="t_price" property="tPrice" jdbcType="VARCHAR" />
+    <result column="t_single_price" property="tSprice" jdbcType="VARCHAR" />
+    <result column="t_child_price" property="tCPrice" jdbcType="VARCHAR" />
+    <result column="price_delta" property="priceDelta" jdbcType="VARCHAR" />
+    <result column="s_price_delta" property="sPriceDelta" jdbcType="VARCHAR" />
+    <result column="child_price_delta" property="cPriceDelta" jdbcType="VARCHAR" />
+    <result column="default_price_limit" property="defaultPriceLimit" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="VARCHAR" />
+    <result column="t_date" property="tDate" jdbcType="DATE" />
+    <result column="vendor_id" property="vendorId" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="api_url" property="apiUrl" jdbcType="VARCHAR" />
+    <result column="source_product_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="coefficient" property="coefficient" jdbcType="FLOAT" />
+    <result column="offset" property="offset" jdbcType="INTEGER" />
+    <result column="ratio" property="ratio" jdbcType="DOUBLE" />
+    <result column="main_flag" property="mainFlag" jdbcType="CHAR" />
+    <result column="base_amount" property="baseAmount" jdbcType="DOUBLE" />
+    <result column="default_child_price" property="defaultChildPrice" jdbcType="DOUBLE" />
+    
+  </resultMap>
+  <resultMap id="proResultMap" type="com.ss.pojo.Product" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="source_product_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="t_date" property="tDate" jdbcType="VARCHAR" />
+    <result column="t_price" property="tPrice" jdbcType="VARCHAR" />
+    <result column="t_single_price" property="tSprice" jdbcType="VARCHAR" />
+    <result column="t_child_price" property="tCPrice" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="VARCHAR" />
+    <result column="last_sync_datetime" property="lastSyncDt" jdbcType="DATE" />
+    <result column="default_price_limit" property="limit" jdbcType="VARCHAR" />
+      <result column="flight_note" property="flightNote" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="percentResultMap" type="com.ss.pojo.SourceProduct" >
+      <result column="decrease_per" property="decreasePer" />
+      <result column="increase_per" property="increasePer" />
+  </resultMap>
+  
+  <select id="getPercentage" resultMap="percentResultMap" >
+  	<![CDATA[
+    select decrease_per, increase_per
+    from source_product
+    where id = #{sourceId} 
+    ]]>
+  </select>
+  
+  <select id="getUpdatePro" resultMap="proResultMap" >
+  	<![CDATA[
+    select pro.id,pro.source_product_id,pro.t_date,pro.t_price,pro.t_single_price,pro.t_child_price,pro.stock,pro.last_sync_datetime,tp.default_price_limit,pro.flight_note
+    from product pro inner join target_product tp on tp.source_product_id = pro.source_product_id
+    where pro.source_product_id = #{sourceId} and CURDATE()<=pro.t_date
+    ]]>
+  </select>
+ 
+ 
+  <insert id="insertProduct" parameterType="com.ss.pojo.Product" >
+    insert into product (id,source_product_id, t_date, t_price, t_single_price, t_child_price, stock, last_sync_datetime, send_ind, flight_note)
+    values 
+    <foreach collection="list" item="item" index="index" separator="," > 
+        (null, #{item.sourceId},#{item.tDate},#{item.tPrice},#{item.tSprice},#{item.tCPrice},#{item.stock},now(), 'Y', #{item.flightNote})
+    </foreach> 
+  </insert>
+  
+  <update id="updateProduct" parameterType="com.ss.pojo.Product" >
+    update product
+    <set >
+    	last_sync_datetime = now() ,
+    	send_ind = 'Y'
+      <if test="tPrice != null" >
+        , t_price = #{tPrice}
+      </if>
+      <if test="tSprice != null" >
+        , t_single_price = #{tSprice}
+      </if>
+      <if test="tCPrice != null" >
+        , t_child_price = #{tCPrice}
+      </if>
+      <if test="stock != null" >
+        , stock = #{stock}
+      </if>
+        <if test="flightNote != null" >
+            , flight_note = #{flightNote}
+        </if>
+    </set>
+    where t_date = #{tDate} and source_product_id=#{sourceId}
+  </update>
+  
+  <select id="getSourceId" resultType="String" >
+  	<![CDATA[
+    select sp.source_product_id from target_product sp where sp.target_product_id in(
+ select tp.target_product_id from product pro , target_product tp where  tp.package_name is not null 
+ and tp.source_product_id = pro.source_product_id and tp.source_product_id=#{sourceId})
+ and sp.source_product_id!=#{sourceId}
+    ]]>
+  </select>
+  
+  <select id="getOffset" resultType="Integer" >
+  	<![CDATA[
+    select offset from target_product where source_product_id=#{sourceId}
+    ]]>
+  </select>
+  
+  
+  <update id="updateProductPackage" parameterType="com.ss.pojo.Product" >
+    update product
+    <set >
+    	last_sync_datetime = now() ,
+    	send_ind = 'Y'
+    </set>
+    where t_date = #{tDate} and source_product_id=#{sourceId}
+  </update>
+  
+  <update id="updateProductStatus" parameterType="com.ss.pojo.Product" >
+    update product
+    set send_ind = #{sendInd}
+    where t_date = #{tDate} and source_product_id=#{sourceId}
+  </update>
+  
+  <update id="updateTargetProductStatus" parameterType="com.ss.pojo.TargetProduct" >
+  	<![CDATA[
+    update target_product
+    set m_status = #{mStatus}
+   	,reason_code = if(length(trim(#{reasonCode}))>0, IF(find_in_set(#{reasonCode},reason_code)<>0,reason_code,if(length(trim(reason_code))>0,CONCAT(reason_code,',',#{reasonCode}),#{reasonCode}) ), '') 
+    where source_product_id=#{sourceId}
+    ]]>
+  </update>
+  
+  <update id="updateSourceProductStatus" parameterType="com.ss.pojo.SourceProduct" >
+  	<![CDATA[
+    update source_product
+    set m_status = #{mStatus}
+   	,reason_code = if(length(trim(#{reasonCode}))>0, IF(find_in_set(#{reasonCode},reason_code)<>0,reason_code,if(length(trim(reason_code))>0,CONCAT(reason_code,',',#{reasonCode}),#{reasonCode}) ), '') 
+    where id=#{id}
+    ]]>
+  </update>
+  
+  <select id="getOutputList" resultMap="BaseResultMap" >
+    <![CDATA[
+	select tp.default_child_price,tp.main_flag,tp.base_amount,tp.package_name,sp.source,tp.target_source,tp.id,tp.target_product_id,pro.t_price,pro.t_single_price,pro.t_child_price,tp.price_delta,tp.s_price_delta,tp.child_price_delta,
+	pro.stock,tp.default_price_limit,date_sub(t_date, INTERVAL ifnull(offset,0) day) t_date,vd.vendor_id,vd.token,vd.api_url,tp.source_product_id,tp.coefficient,tp.offset, tp.ratio from target_product tp inner join product pro
+	on tp.source_product_id = pro.source_product_id
+    inner join source_product sp
+    on tp.source_product_id=sp.id
+	inner join vendor vd
+  	on tp.target_configure = vd.id
+  	and tp.need_sync = 1
+	and CURDATE()<=pro.t_date
+    and pro.t_date<= date_add(now(), INTERVAL ifnull(due_date,1000) day) and
+	(
+  	(round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time1))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time1))/60)>0)
+	or (round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time2))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time2))/60)>0)
+	or (round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time3))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time3))/60)>0)
+	or (round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time4))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time4))/60)>0)
+	or (round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time5))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time5))/60)>0)
+	or (round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time6))/60)<40 && round((TIME_TO_SEC(CURTIME())-TIME_TO_SEC(tp.sync_time6))/60)>0)
+	)
+	]]>
+  </select>
+  
+  <select id="getOutputListForUpdate" resultMap="BaseResultMap" >
+    <![CDATA[
+	select tp.default_child_price,tp.main_flag,tp.base_amount,tp.package_name,sp.source,tp.target_source,tp.id,tp.target_product_id,pro.t_price,pro.t_single_price,pro.t_child_price,tp.price_delta,tp.s_price_delta,tp.child_price_delta,
+	pro.stock,tp.default_price_limit,date_sub(t_date, INTERVAL ifnull(offset,0) day) t_date,vd.vendor_id,vd.token,vd.api_url,tp.source_product_id,tp.coefficient,tp.offset, tp.ratio from target_product tp inner join product pro
+	on tp.source_product_id = pro.source_product_id
+    inner join source_product sp
+    on tp.source_product_id=sp.id
+	inner join vendor vd
+  	on tp.target_configure = vd.id
+  	and tp.need_sync = 1
+	and CURDATE()<=pro.t_date
+    and pro.t_date<= date_add(now(), INTERVAL ifnull(due_date,1000) day)
+    and pro.send_ind='Y'
+    and tp.source_product_id in(
+    select sp.source_product_id from target_product sp where sp.target_product_id in(
+ select tp.target_product_id from product pro , target_product tp where tp.source_product_id = pro.source_product_id and tp.source_product_id=#{id})
+    ) 
+	]]>
+  </select>
+  
+  <update id="updateLastSyncDatetime" parameterType="com.ss.pojo.TargetProduct" >
+    update target_product
+    set last_sync_datetime = now(), updated_by='system'
+    where id=#{id}
+  </update>
+  
+  <update id="updateCount" parameterType="hashmap">
+    update sync_count
+    set count = count + #{count}
+    where target=#{target} and t_date =#{tDate}
+  </update>
+  
+  <insert id="insertCount" parameterType="hashmap">
+  	insert into sync_count (id,target, count, t_date)
+		values
+		(null, #{target},#{count},#{tDate})
+  </insert>
+</mapper>

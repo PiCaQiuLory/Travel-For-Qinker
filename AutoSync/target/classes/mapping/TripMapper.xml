@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.TripDao">
+
+	<select id="queryByUser" resultType="com.ss.pojo.trip.Trip"
+		parameterType="int">
+		select * from trip where user_id = #{userId} order by
+		create_date desc
+	</select>
+
+	<select id="queryByDepartment" resultType="com.ss.pojo.trip.Trip"
+		parameterType="int">
+		select * from trip where department_id =
+		#{department_id} order by create_date desc
+	</select>
+
+	<select id="queryAllTrip" resultType="com.ss.pojo.trip.Trip">
+		select * from trip order by
+		create_date desc
+	</select>
+
+	<insert id="saveTrip" parameterType="com.ss.pojo.trip.Trip"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into trip
+		values(null,#{title},#{customer_wechat},#{customer_name},#{user_id},#{department_id},
+		#{create_date},#{itemNumber},#{travel_date},#{end_date},#{start_point},#{end_point},#{phoneNumber},#{url})
+	</insert>
+	<insert id="saveTripItems" parameterType="com.ss.pojo.trip.TripItem"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into trip_item
+		values(null,#{day},#{title},#{trip_id})
+	</insert>
+	<insert id="saveTripItemDescription" parameterType="java.util.ArrayList">
+		insert into trip_item_description values
+		<foreach collection="list" index="index" item="item"
+			separator=",">
+			(null,#{item.sort_id},#{item.description},#{item.trip_item_id})
+		</foreach>
+	</insert>
+
+	<select id="getTripItemById" resultType="com.ss.pojo.trip.TripItemVo"
+		parameterType="int">
+		select id,day,title from trip_item where trip_id = #{id}
+		order by day
+	</select>
+
+	<select id="getTripItemDescById" resultType="com.ss.pojo.trip.TripItemDescription"
+		parameterType="int">
+		select * from trip_item_description where trip_item_id =
+		#{id}
+	</select>
+
+	<update id="updateTrip" parameterType="com.ss.pojo.trip.Trip">
+		update trip set
+		title=#{title},customer_name=#{customer_name},customer_wechat=#{customer_wechat},itemNumber=#{itemNumber},
+		travel_date=#{travel_date},end_date=#{end_date},phoneNumber=#{phoneNumber}
+		where id=#{id}
+	</update>
+
+	<update id="updateTripItem" parameterType="com.ss.pojo.trip.TripItem">
+		update trip_item set
+		day=#{day},title=#{title} where id=#{id}
+	</update>
+
+	<update id="updateTripItemDesc" parameterType="com.ss.pojo.trip.TripItemDescription">
+		update
+		trip_item_description set description=#{description} where id=#{id}
+	</update>
+
+	<select id="selectTripItemByTripId" parameterType="int"
+		resultType="int">
+		select id from trip_item where trip_id = #{id}
+	</select>
+
+	<delete id="deleteTrip" parameterType="int">
+		delete from trip where
+		id=#{id}
+	</delete>
+	<delete id="deleteTripItem" parameterType="int">
+		delete from trip_item
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteTripItems" parameterType="int">
+		delete from trip_item
+		where trip_id=#{id}
+	</delete>
+	<delete id="deleteTripItemDesc" parameterType="int">
+		delete from
+		trip_item_description where id=#{id}
+	</delete>
+
+	<delete id="deleteTripItemDescs" parameterType="int">
+		delete from
+		trip_item_description where trip_item_id=#{id}
+	</delete>
+
+	<delete id="deleteTripDescByTrip" parameterType="int[]">
+		delete from trip_item_description where trip_item_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="getTripForApp" resultType="com.ss.pojo.trip.Trip"
+		parameterType="String">
+		select * from trip where customer_wechat = #{wechat}
+	</select>
+
+	<select id="getTripForAppNumber" resultType="com.ss.pojo.trip.Trip"
+		parameterType="String">
+		select * from trip where phoneNumber = #{phoneNumber}
+	</select>
+
+	<select id="getTripById" parameterType="int" resultType="com.ss.pojo.trip.Trip">
+		select *
+		from trip where id = #{tripId}
+	</select>
+
+	<insert id="insertPlane" parameterType="java.util.List">
+		insert into plane values
+		<foreach collection="list" index="index" item="item"
+			separator=",">
+			(null,#{item.to_date},#{item.to_number},#{item.to_desc},#{item.to_start_end},#{item.land_date},#{item.land_number},
+			#{item.land_desc},#{item.land_start_end},#{item.back_date},#{item.back_number},#{item.back_desc},#{item.back_start_end},#{item.trip_id})
+		</foreach>
+	</insert>
+	<select id="getPlaneByTripId" parameterType="int" resultType="com.ss.pojo.trip.Plane">
+		select *
+		from plane where trip_id = #{tripId}
+	</select>
+	<update id="updatePlane" parameterType="com.ss.pojo.trip.Plane">
+		update plane set to_date=#{to_date},to_number=#{to_number},to_desc=#{to_desc},to_start_end=#{to_start_end},
+		land_date=#{land_date},land_number=#{land_number},land_desc=#{land_desc},land_start_end=#{land_start_end},
+		back_date=#{back_date},back_number=#{back_number},back_desc=#{back_desc},back_start_end=#{back_start_end} 
+		where id=#{id}
+	</update>
+	
+	<select id="getPlaneTo" parameterType="int"  resultType="com.ss.pojo.trip.Plane">
+		select * from plane where trip_id = #{trip_id} and land_date is null and back_date is null;
+	</select>
+	
+	<select id="getPlaneLand" parameterType="int"  resultType="com.ss.pojo.trip.Plane">
+		select * from plane where trip_id = #{trip_id} and to_date is null and back_date is null;
+	</select>
+	
+	<select id="getPlaneBack" parameterType="int"  resultType="com.ss.pojo.trip.Plane">
+		select * from plane where trip_id = #{trip_id} and land_date is null and to_date is null;
+	</select>
+	<delete id="deletePlane" parameterType= "int">
+		delete from plane where trip_id=#{trip_id}
+	</delete>
+	
+	<select id="getTripByItemNumber" parameterType="String" resultType="com.ss.pojo.trip.Trip">
+		select *
+		from trip where itemNumber = #{itemNumber}
+	</select>
+	
+	<update id="updateTicketTripId" parameterType="int">
+		update ticket set trip_id = #{lastId} where trip_id=#{id}
+	</update>
+	
+	<update id="updateBusTicketTripId" parameterType="int">
+		update bus_ticket set trip_id = #{lastId} where trip_id=#{id}
+	</update>
+	
+	<update id="updateCharteredTripId" parameterType="int">
+		update chartered set trip_id = #{lastId} where trip_id=#{id}
+	</update>
+	
+	<update id="updateScheduleTripId" parameterType="int">
+		update schedule set trip_id = #{lastId} where trip_id=#{id}
+	</update>
+	
+	<select id="getUrlByItemNumber" parameterType="String" resultType="String">
+		select url from trip where itemNumber=#{itemNumber}
+	</select>
+	
+	<delete id="deleteTicket" parameterType="int">
+		delete from ticket where trip_id = #{trip_id};
+	</delete>
+	
+	<delete id="deleteBusTicket" parameterType="int">
+		delete from bus_ticket where trip_id = #{trip_id};
+	</delete>
+	
+	<delete id="deleteChartered" parameterType="int">
+		delete from chartered where trip_id = #{trip_id};
+	</delete>
+	
+	<delete id="deleteSchedule" parameterType="int">
+		delete from schedule where trip_id = #{trip_id};
+	</delete>
+	
+	<select id="getTicketEntity" parameterType="int" resultType="com.ss.pojo.trip.TicketEntity">
+		select * from ticket where trip_item_id=#{tripItemId}
+	</select>
+	
+	<select id="getBusTicketEntity" parameterType="int" resultType="com.ss.pojo.trip.BusTicketEntity">
+		select * from bus_ticket where trip_item_id=#{tripItemId}
+	</select>
+	
+	<select id="getCharteredEntity" parameterType="int" resultType="com.ss.pojo.trip.CharteredEntity">
+		select * from chartered where trip_item_id=#{tripItemId}
+	</select>
+	
+	<select id="getScheduleEntity" parameterType="int" resultType="com.ss.pojo.trip.Schedule">
+		select * from schedule where trip_item_id=#{tripItemId}
+	</select>
+	
+	<insert id="saveTravelReservation" parameterType="com.ss.pojo.trip.TravelReservation">
+		insert into travel_reservation values(null,#{description},#{trip_item_id})
+	</insert>
+	
+	<insert id="saveConsumer" parameterType="com.ss.pojo.trip.Consumer">
+		insert into consumer values(null,#{content},#{trip_id})
+	</insert>
+	
+	<delete id="deleteConsumer" parameterType="int">
+		delete from consumer where trip_id=#{trip_id}
+	</delete>
+	
+	<delete id="deleteTravelReservation" parameterType="int[]">
+		delete from travel_reservation where trip_item_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<select id="getTravelReservation" parameterType="int" resultType="com.ss.pojo.trip.TravelReservation">
+		select * from travel_reservation where trip_item_id=#{trip_item_id}
+	</select>
+	<select id="getConsumer" parameterType="int" resultType="com.ss.pojo.trip.Consumer">
+		select * from consumer where trip_id=#{trip_id}
+	</select>
+</mapper>   

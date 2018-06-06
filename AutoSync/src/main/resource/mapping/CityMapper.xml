@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.CityDao">
+	<insert id="insertCountry" parameterType="com.ss.pojo.trip.Country">
+		<selectKey resultType="int" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into country_new values(null,#{name})
+	</insert>
+	<insert id="insertStates" parameterType="com.ss.pojo.trip.States">
+		<selectKey resultType="int" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into state values(null,#{name},#{co_id})
+	</insert>
+	<insert id="insertCity" parameterType="com.ss.pojo.trip.City">
+		insert into city values(null,#{name},#{s_id})
+	</insert>
+	
+	<select id="getCountryByName" resultType="com.ss.pojo.trip.Country" parameterType="String">
+		select name from country_new where name=#{name}
+	</select>
+	<select id="getStatesByName" resultType="com.ss.pojo.trip.States" parameterType="String">
+		select id,name,co_id from state where name=#{name}
+	</select>
+	<select id="getCityByName" resultType="com.ss.pojo.trip.City" parameterType="String">
+		select id,name,s_id from city_new where name=#{name}
+	</select>
+	<select id="getCountryById" resultType="String" parameterType="int">
+		select name from country_new where id = #{id}
+	</select>
+	<select id="getStateById" resultType="String" parameterType="int">
+		select name from state where id = #{id}
+	</select>
+	<select id="getCityById" resultType="String" parameterType="int">
+		select name from city_new where id = #{id}
+	</select>
+	<select id="getStateByCid" resultType="com.ss.pojo.trip.States" parameterType="int">
+		select id,name,co_id from state where id=#{id}
+	</select>
+</mapper>   

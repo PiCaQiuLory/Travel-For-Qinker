@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.SpiderDao">
+	<select id="getAllSpiderDetail" resultType="com.ss.pojo.spider.SpiderDetail"
+		parameterType="java.util.Date">
+		select id,itemNumber,user,price,remark from
+		spider_order_detail where create_date = #{date} and type='已成团'
+	</select>
+	<select id="getSpiderDetailByDate" resultType="com.ss.pojo.spider.SpiderDetail">
+		select
+		id,itemNumber,user,price,remark from spider_order_detail where
+		create_date &gt;= #{start} and create_date &lt;=#{end}
+	</select>
+	<select id="getSpiderOrderByItemNumber" resultType="com.ss.pojo.spider.SpiderDetail"
+		parameterType="String">
+		select id,itemNumber,incomeNew as price from order_t
+		where itemNumber = #{itemNumber}
+	</select>
+
+	<select id="getOrderItemByCostAndDate" resultType="com.ss.pojo.spider.SpiderDetail">
+		SELECT
+		date_format(cost_time,'%Y-%m-%d') as time,cost from order_cost_item
+		WHERE order_id =
+		(SELECT id FROM order_t as ot WHERE ot.itemNumber =
+		#{itemNumber}) and
+		date_format(cost_time,'%Y-%m-%d') = #{time}
+	</select>
+	<select id="getOrderItemByCostAndCost" resultType="com.ss.pojo.spider.SpiderDetail">
+		SELECT
+		date_format(cost_time,'%Y-%m-%d') as time,cost from order_cost_item
+		WHERE order_id =
+		(SELECT id FROM order_t as ot WHERE ot.itemNumber =
+		#{itemNumber}) and
+		cost=#{cost} and date_format(cost_time,'%Y-%m-%d') =
+		#{time}
+	</select>
+
+	<select id="getNewDetailsByItemNumber" parameterType="Integer"
+		resultType="com.ss.pojo.spider.SpiderDetail">
+		select id,cost as price from spider_order_price where
+		order_id=#{orderId}
+	</select>
+
+	<select id="getOldDetailsByItemNumber" resultType="com.ss.pojo.spider.SpiderDetail">
+		select id,cost
+		as price from order_cost_item where
+		cost = #{cost} and order_id =
+		(select id from order_t as ot where
+		ot.itemNumber=#{itemNumber})
+	</select>
+
+	<select id="getSettleFormApply" parameterType="String"
+		resultType="com.ss.pojo.spider.AlipaySettle">
+		select id,pay_number as payNumber,CAST(`total` AS CHAR(50))
+		as price from
+		order_apply where pay_number = #{payNumber}
+	</select>
+	
+	<select id="getAllAppWechat" resultType="com.ss.pojo.app.AppWechat">
+		select aw.id,aw.wechat_id as wechatId,ut.nickname as username from app_wechat as aw INNER JOIN user_t as ut on aw.u_id = ut.id where aw.status = 'outline'
+	</select>
+	
+	<update id="updateAppWechatStatus">
+		update app_wechat set status = 'outline'
+	</update>
+</mapper>   

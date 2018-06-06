@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="AutoSync:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="travel-2.0-RELEASE.war">
+      <element id="artifact" artifact-name="AutoSync:war exploded" />
+    </root>
+  </artifact>
+</component>

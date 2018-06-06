@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.mapper.OrderApplyMapper">
+  <resultMap id="BaseResultMap" type="com.ss.pojo.OrderApply">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="pay_way" jdbcType="BIT" property="payWay" />
+    <result column="pay_number" jdbcType="VARCHAR" property="payNumber" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="auditor_id" jdbcType="INTEGER" property="auditorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, apply_time, total, status, pay_time, pay_way, pay_number, item_id, user_id, auditor_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ss.pojo.OrderApplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order_apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ss.pojo.OrderApplyExample">
+    delete from order_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ss.pojo.OrderApply">
+    insert into order_apply (id, apply_time, total, 
+      status, pay_time, pay_way, 
+      pay_number, item_id, user_id, 
+      auditor_id)
+    values (#{id,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{total,jdbcType=DECIMAL}, 
+      #{status,jdbcType=BIT}, #{payTime,jdbcType=TIMESTAMP}, #{payWay,jdbcType=BIT}, 
+      #{payNumber,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{auditorId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ss.pojo.OrderApply">
+    insert into order_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="applyTime != null">
+        apply_time,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="payWay != null">
+        pay_way,
+      </if>
+      <if test="payNumber != null">
+        pay_number,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="auditorId != null">
+        auditor_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applyTime != null">
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payWay != null">
+        #{payWay,jdbcType=BIT},
+      </if>
+      <if test="payNumber != null">
+        #{payNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="auditorId != null">
+        #{auditorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ss.pojo.OrderApplyExample" resultType="java.lang.Long">
+    select count(*) from order_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update order_apply
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applyTime != null">
+        apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.total != null">
+        total = #{record.total,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.payTime != null">
+        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payWay != null">
+        pay_way = #{record.payWay,jdbcType=BIT},
+      </if>
+      <if test="record.payNumber != null">
+        pay_number = #{record.payNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditorId != null">
+        auditor_id = #{record.auditorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update order_apply
+    set id = #{record.id,jdbcType=BIGINT},
+      apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+      total = #{record.total,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=BIT},
+      pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      pay_way = #{record.payWay,jdbcType=BIT},
+      pay_number = #{record.payNumber,jdbcType=VARCHAR},
+      item_id = #{record.itemId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      auditor_id = #{record.auditorId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ss.pojo.OrderApply">
+    update order_apply
+    <set>
+      <if test="applyTime != null">
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payWay != null">
+        pay_way = #{payWay,jdbcType=BIT},
+      </if>
+      <if test="payNumber != null">
+        pay_number = #{payNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="auditorId != null">
+        auditor_id = #{auditorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ss.pojo.vo.OrderItemVo">
+    update order_apply
+    set apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      total = #{total,jdbcType=DECIMAL},
+      status = #{status,jdbcType=BIT},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      pay_way = #{payWay,jdbcType=BIT},
+      pay_number = #{payNumber,jdbcType=VARCHAR},
+      itemNumber = #{itemNumber,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      auditor_id = #{auditorId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id = "getNonAuditingOrderNumberForFinance" resultType="int" >
+  	select count(*) from order_apply where status = '审核中'
+  </select>
+  
+  <insert id="applyOrderList" parameterType="com.ss.pojo.vo.OrderItemVo">
+  	insert into order_apply (apply_time,total,type,orderNo,name,category,itemNumber,user_id,status,order_item_id,use_date)
+    values
+    <foreach collection="list" item="item" index = "index" separator=",">
+    	(#{item.applyTime,jdbcType=TIMESTAMP}, #{item.total,jdbcType=DECIMAL},
+ 	#{item.type,jdbcType=VARCHAR},#{item.orderNo,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},#{item.category,jdbcType=VARCHAR},
+ 	#{item.itemNumber,jdbcType=VARCHAR},#{item.userId,jdbcType=INTEGER},#{item.status,jdbcType=VARCHAR},#{item.orderItemId,jdbcType=INTEGER},
+ 	#{item.useDate,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <select id="getAllOrders" resultType="com.ss.pojo.Order" parameterType="int">
+  	select itemNumber,customerName,manFlat,status from order_t where manNameId = #{id} order by createDate DESC
+  </select>
+  <select id="getAllOrdersByManager" resultType="com.ss.pojo.Order">
+  	select itemNumber,customerName,manFlat,status from order_t  order by createDate DESC
+  </select>
+  
+  <select id="getAllOrdersWithNoPage" resultType="com.ss.pojo.Order" parameterType="int">
+  	select itemNumber,customerName,manFlat,status from order_t where 1=1 and manNameId = #{id}
+  </select>
+  <select id="getOrderItems" parameterType="String" resultType="com.ss.pojo.vo.OrderItemVo">
+  	select resn.order_item_id as orderItemId,resn.order_id,resn.category,resn.type,resn.total,resn.orderNo,resn.paystatus as status,resn.use_date as useDate,pt.`name` from 
+  	(select oi.id as order_item_id,oi.category,oi.type,oi.cost as total,oi.orderNo,oi.provider_id,oi.order_id,oi.paystatus,oi.use_date from order_item oi 
+  	where oi.order_id = (select ot.id FROM order_t ot where ot.itemNumber = #{itemNumber})) AS resn INNER JOIN
+	provider_t pt on resn.provider_id = pt.id
+  </select>
+  
+  <insert id="applyOneOrder" parameterType="com.ss.pojo.vo.OrderItemVo">
+  	insert into order_apply(apply_time,total,type,orderNo,name,category,itemNumber,user_id,status,order_item_id,use_date)
+ 	values(#{applyTime,jdbcType=TIMESTAMP}, #{total,jdbcType=DECIMAL},
+ 	#{type,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{category,jdbcType=VARCHAR},
+ 	#{itemNumber,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{status,jdbcType=VARCHAR},#{orderItemId,jdbcType=INTEGER},
+ 	#{useDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="getNonAuditingOrderForFinance" resultType="com.ss.pojo.vo.OrderItemVo">
+  		select `at`.id,`at`.order_item_id as orderItemId,status,total,type,`at`.orderNo,name,category,date_format(apply_time,'%Y-%c-%d %h:%i:%s') as applyTimeStr,
+date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,pay_way as payWay,pay_number as payNumber,itemNumber,user_id as userId,auditor_id as auditorId,date_format(bill_date,'%Y-%c-%d %h:%i:%s') as billDateStr,bill_cost as billCost,bill_status as billStatus,date_format(use_date,'%Y-%c-%d %h:%i:%s') as useDateStr,ut.nickname as userNickName
+ from order_apply  as at  inner join user_t as ut ON user_id = ut.id where `status` = '审核中' order by apply_time DESC
+  </select>
+  
+  <select id="getAuditingOrderForFinance" resultType="com.ss.pojo.vo.OrderItemVo" parameterType="int">
+  		select oa.id,order_item_id as orderItemId,date_format(apply_time,'%Y-%c-%d %h:%i:%s') as applyTimeStr,total,type,orderNo,name,category,status,date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,pay_way as payWay,pay_number as 
+  		payNumber,itemNumber,user_id as userId,auditor_id as auditorId,date_format(bill_date,'%Y-%c-%d %h:%i:%s') as billDateStr,bill_cost as billCost,bill_status as billStatus,date_format(use_date,'%Y-%c-%d %h:%i:%s') as useDateStr,ui.nickname as userNickName from order_apply as oa INNER JOIN 
+  		user_t as ui where status = '已付款' and auditor_id = #{auditor_id} and oa.user_id = ui.id order by pay_time DESC
+  </select>
+  
+  <select id="getNonAuditingOrderForUser" resultType="com.ss.pojo.vo.OrderItemVo" parameterType="int">
+  	select oa.id,order_item_id as orderItemId,date_format(apply_time,'%Y-%c-%d %h:%i:%s') as applyTimeStr,total,type,orderNo,name,category,status,date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,pay_way as payWay,pay_number as 
+  		payNumber,itemNumber,user_id as userId,auditor_id as auditorId,date_format(bill_date,'%Y-%c-%d %h:%i:%s') as billDateStr,bill_cost as billCost,bill_status as billStatus,date_format(use_date,'%Y-%c-%d %h:%i:%s') as useDateStr 
+  		from order_apply as oa where status = '审核中' and user_id = #{id} order by apply_time DESC
+  </select>
+  
+  <select id="getAuditingOrderForUser" resultType="com.ss.pojo.vo.OrderItemVo" parameterType="int">
+  	select oa.id,order_item_id as orderItemId,date_format(apply_time,'%Y-%c-%d %h:%i:%s') as applyTimeStr,total,type,orderNo,name,category,status,date_format(pay_time,'%Y-%c-%d %h:%i:%s') as payTimeStr,pay_way as payWay,pay_number as 
+  		payNumber,itemNumber,user_id as userId,auditor_id as auditorId,date_format(bill_date,'%Y-%c-%d %h:%i:%s') as billDateStr,bill_cost as billCost,bill_status as billStatus,date_format(use_date,'%Y-%c-%d %h:%i:%s') as useDateStr,ui.nickname as userNickName from order_apply as oa INNER JOIN 
+  		user_t as ui on auditor_id = ui.id where status = '已付款' and user_id = #{userId} order by apply_time DESC
+  </select>
+  <update id="changeOderItemStatusTojudy" parameterType="int">
+  	update order_item set paystatus = '审核中' where id = #{orderItemId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="changeOderItemsStatusTojudy" parameterType="com.ss.pojo.vo.OrderItemVo">
+  	update order_item
+  	<set>
+  			paystatus = '审核中'
+  	</set>
+  	where id in
+  	<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+  		#{item.orderItemId}
+  	</foreach>
+  </update>
+  
+  <update id="updateOrderStatus" parameterType="com.ss.pojo.vo.OrderItemVo">
+  	update order_apply set status = '已付款',pay_way=#{payWay,jdbcType=TINYINT},pay_time=#{payTime,jdbcType=TIMESTAMP},pay_number=#{payNumber,jdbcType=VARCHAR},
+  	auditor_id=#{auditorId,jdbcType=INTEGER},provider_id=#{provider_id,jdbcType=INTEGER} where id=#{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateOrderItemStatus" parameterType="int">
+  	update order_item set paystatus = '已付款' where id=#{id}
+  </update>
+  
+  <update id="updateOrderBill" parameterType="com.ss.pojo.vo.OrderItemVo">
+  	update order_apply set bill_date = #{billDate,jdbcType=TIMESTAMP},bill_cost=#{billCost,jdbcType=DECIMAL},bill_status=#{billStatus,jdbcType=VARCHAR}
+  	where id = #{id}
+  </update>
+  <select id="getOrderItemById" resultType="com.ss.pojo.vo.OrderItemVo">
+  	select id,order_item_id as orderItemId,status from order_apply where id = #{id}
+  </select>
+  
+  <delete id="updateOrderItemByIdToRefuse" parameterType="int">
+  	delete from order_apply where id = #{id}
+  </delete>
+  
+  <delete id="updateOrderItemByIdToCancle" parameterType="int">
+  	delete from order_apply where id = #{id}
+  </delete>
+  <update id="updateOrderTByIdToCancle" parameterType="int">
+  	update order_item set paystatus = '未付款' where id = #{orderItemId}
+  </update>
+  <update id="updateOrderTByIdToRefuse" parameterType="int">
+  	update order_item set paystatus = '未付款(已拒绝)' where id = #{orderItemId}
+  </update>
+  <select id="selectByParameters" parameterType="com.ss.pojo.Order" resultType="com.ss.pojo.Order">
+  	select id,itemNumber,customerName,manFlat,status from order_t where true 
+  	<if test="itemNumber != null and itemNumber != ''">
+  		and itemNumber like #{itemNumber}
+  	</if>
+  	<if test="customerName !=null and customerName != ''">
+  		and customerName like #{customerName}
+  	</if>
+  	<if test="manFlat !=null and manFlat !=''">
+  		and manFlat = #{manFlat}
+  	</if>
+  	<if test="status !=null and status != ''">
+  		and status = #{status}
+  	</if>
+  	<if test="manNameId !=null and manNameId != ''">
+  		and manNameId = #{manNameId}
+  	</if>
+  </select>
+    
+  
+  <select id="selectOrderApplys"  resultType="com.ss.pojo.vo.OrderItemVo">
+  	select oa.id,order_item_id as orderItemId,apply_time as applyTime,total,type,orderNo,name,category,status,pay_time as payTime,pay_way as payWay,pay_number as 
+  		payNumber,itemNumber,user_id as userId,auditor_id as auditorId,bill_date as billDate,bill_cost as billCost,bill_status as billStatus,use_date as useDate from order_apply as oa
+  		where id in 
+  		<foreach collection="array" index="index" item="id" separator="," open="(" close=")">
+  			#{id}
+  		</foreach>
+  </select>
+  <delete id="deleteOrderApplys">
+  	delete from order_apply where id in
+  	<foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+  		#{item}
+  	</foreach>
+  	order by apply_time desc
+  </delete>
+  <insert id="insertIntoOrderApplyFromMerge">
+  	insert into order_apply(order_item_id,apply_time,total,type,orderNo,name,category,status,itemNumber,user_id,use_date) values
+  	<foreach collection="list" item="item" index="index" separator=",">
+  		(
+  			#{item.orderItemId},#{item.applyTime},#{item.total},#{item.type},#{item.orderNo},#{item.name},#{item.category},
+  			#{item.status},#{item.itemNumber},#{item.userId},#{item.useDate}
+  		)
+  	
+  	</foreach>
+  </insert>
+  <select id="selectMergeOrderId" parameterType="int" resultType="int">
+  	select user_id from order_apply_item where order_merge_id = #{id} 
+  </select>
+</mapper>

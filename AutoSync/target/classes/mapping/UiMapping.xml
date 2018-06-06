@@ -1,0 +1,939 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.IUiDao" >
+	<resultMap id="sourceProductResponseMap" type="com.ss.pojo.SourceProductResponse">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="sync_status" property="syncStatus" jdbcType="VARCHAR" />
+		<result column="sync_end_date" property="syncEndDate" jdbcType="DATE" />
+		<result column="last_sync_datetime" property="lastSyncDatetime" jdbcType="DATE" />
+		<result column="sync_time1" property="syncTime1" jdbcType="DATE" />
+		<result column="sync_time2" property="syncTime2" jdbcType="DATE" />
+		<result column="sync_time3" property="syncTime3" jdbcType="DATE" />
+		<result column="sync_time4" property="syncTime4" jdbcType="DATE" />
+		<result column="sync_time5" property="syncTime5" jdbcType="DATE" />
+		<result column="sync_time6" property="syncTime6" jdbcType="DATE" />
+		<result column="m_status" property="mStatus" jdbcType="VARCHAR" />
+		<result column="need_sync" property="needSync" jdbcType="INTEGER" />
+		<result column="reason_code" property="reasonCode" jdbcType="VARCHAR" />
+		<result column="custom_field" property="customField" jdbcType="VARCHAR" />
+		<result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="updated_dt" property="updatedDt" jdbcType="DATE" />
+		<result column="airport_from" property="airportFrom" jdbcType="VARCHAR" />
+		<result column="airport_to" property="airportTo" jdbcType="VARCHAR" />
+		<result column="flight_time_from" property="flightTimeFrom" jdbcType="VARCHAR" />
+		<result column="flight_time_to" property="flightTimeTo" jdbcType="VARCHAR" />
+		<result column="flight_time_from2" property="flightTimeFrom2" jdbcType="VARCHAR" />
+		<result column="flight_time_to2" property="flightTimeTo2" jdbcType="VARCHAR" />
+		<result column="stock" property="stock" jdbcType="INTEGER" />
+		<result column="immediate" property="immediate" jdbcType="INTEGER" />
+		<result column="product_type" property="productType" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<resultMap id="targetProductResponseMap" type="com.ss.pojo.TargetProductResponse">
+
+		<result column="vendor_id" property="vendorId" jdbcType="VARCHAR" />
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="source_product_id" property="sourceProductId" jdbcType="INTEGER" />
+		<result column="target_source" property="targetSource" jdbcType="VARCHAR" />
+		<result column="target_product_id" property="targetProductId" jdbcType="VARCHAR" />
+		<result column="price_delta" property="priceDelta" jdbcType="VARCHAR" />
+		<result column="s_price_delta" property="sPriceDelta" jdbcType="VARCHAR" />
+		<result column="child_price_delta" property="childPriceDelta" jdbcType="VARCHAR" />
+		<result column="default_price_limit" property="defaultPriceLimit" jdbcType="VARCHAR" />
+		<result column="sync_status" property="syncStauts" jdbcType="VARCHAR" />
+		<result column="sync_end_date" property="syncEndDate" jdbcType="DATE" />
+		<result column="last_sync_datetime" property="lastSyncDatetime" jdbcType="DATE" />
+		<result column="sync_time1" property="syncTime1" jdbcType="VARCHAR" />
+		<result column="sync_time2" property="syncTime2" jdbcType="VARCHAR" />
+		<result column="sync_time3" property="syncTime3" jdbcType="VARCHAR" />
+		<result column="sync_time4" property="syncTime4" jdbcType="VARCHAR" />
+		<result column="sync_time5" property="syncTime5" jdbcType="VARCHAR" />
+		<result column="sync_time6" property="syncTime6" jdbcType="VARCHAR" />
+		<result column="target_configure" property="targetConfigure" jdbcType="INTEGER" />
+		<result column="m_status" property="mStatus" jdbcType="VARCHAR" />
+		<result column="need_sync" property="needSync" jdbcType="INTEGER" />
+		<result column="reason_code" property="reasonCode" jdbcType="VARCHAR" />
+		<result column="custom_field" property="customField" jdbcType="VARCHAR" />
+		<result column="package_name" property="packageName" jdbcType="VARCHAR" />
+		<result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="updated_dt" property="updatedDt" jdbcType="DATE" />
+		<result column="coefficient" property="coefficient" jdbcType="VARCHAR" />
+		<result column="due_date" property="dueDate" jdbcType="INTEGER" />
+		<result column="offset" property="offset" jdbcType="INTEGER" />
+		<result column="ratio" property="ratio" jdbcType="DOUBLE" />
+		<result column="base_amount" property="baseAmount" jdbcType="DOUBLE" />
+		<result column="main_flag" property="mainFlag" jdbcType="VARCHAR" />
+		<result column="product_owner_id" property="productOwnerId" jdbcType="INTEGER" />
+		<result column="productOwnerName" property="productOwnerName" jdbcType="VARCHAR" />
+		<result column="notes" property="notes" jdbcType="VARCHAR" />
+		<result column="default_child_price" property="defaultChildPrice" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<resultMap id="productResponseMap" type="com.ss.pojo.ProductResponse">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="source_product_id" property="sourceProductId" jdbcType="VARCHAR" />
+		<result column="t_date" property="tDate" jdbcType="DATE" />
+		<result column="t_price" property="tPrice" jdbcType="VARCHAR" />
+		<result column="t_single_price" property="tSinglePrice" jdbcType="VARCHAR" />
+		<result column="t_child_price" property="tChildPrice" jdbcType="VARCHAR" />
+		<result column="stock" property="stock" jdbcType="VARCHAR" />
+		<result column="last_sync_datetime" property="lastSyncDatetime" jdbcType="DATE" />
+		<result column="send_ind" property="sendInd" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="url" property="sourceUrl" jdbcType="VARCHAR" />
+		<result column="flight_note" property="flightNote" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="vendorResponseMap" type="com.ss.pojo.VendorResponse">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="vendor_id" property="vendorId" jdbcType="VARCHAR" />
+		<result column="token" property="token" jdbcType="DATE" />
+		<result column="api_url" property="apiUrl" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="providerMap" type="com.ss.pojo.Provider">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="balance" property="balance" jdbcType="DECIMAL" />
+		<result column="cost" property="cost" jdbcType="DECIMAL" />
+		<result column="category" property="category" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<resultMap id="orderMap" type="com.ss.pojo.Order">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="departure" property="departure" jdbcType="VARCHAR" />
+		<result column="destination" property="destination" jdbcType="VARCHAR" />
+		<result column="customerName" property="customerName" jdbcType="VARCHAR" />
+		<result column="customerNumber" property="customerNumber" jdbcType="VARCHAR" />
+		<result column="itemNumber" property="itemNumber" jdbcType="VARCHAR" />
+		<result column="need" property="need" jdbcType="VARCHAR" />
+		<result column="playDays" property="playDays" jdbcType="VARCHAR" />
+		<result column="startDate" property="startDate" jdbcType="DATE" />
+		<result column="userNum" property="userNum" jdbcType="VARCHAR" />
+		<result column="manArea" property="manArea" jdbcType="VARCHAR" />
+		<result column="manFlat" property="manFlat" jdbcType="VARCHAR" />
+		<result column="manNameId" property="manNameId" jdbcType="INTEGER"/>
+		<result column="manName" property="manName" jdbcType="VARCHAR"/>
+		<result column="manAccount" property="manAccount" jdbcType="VARCHAR"/>
+		<result column="manSonAccount" property="sonAccount" jdbcType="VARCHAR"/>
+		<result column="createDate" property="createDate" jdbcType="DATE"/>
+		<result column="outDate" property="outDate" jdbcType="DATE"/>
+		<result column="comment" property="comment" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="VARCHAR"/>
+		<result column="experience" property="experience" jdbcType="VARCHAR"/>
+		<result column="orderTimer" property="orderTimer" jdbcType="DATE"/>
+		<result column="backDate" property="backDate" jdbcType="DATE"/>
+		<result column="income" property="income" jdbcType="DOUBLE" />
+		<result column="incomeNew" property="incomeNew" jdbcType="DOUBLE" />
+		<result column="cost" property="cost" jdbcType="DOUBLE" />
+		<result column="revenue" property="revenue" jdbcType="DOUBLE" />
+		<result column="clientStatus" property="clientStatus" jdbcType="VARCHAR"/>
+		<result column="url" property="url" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="orderLogMap" type="com.ss.pojo.OrderLog">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR"/>
+		<result column="add_by" property="addBy" jdbcType="VARCHAR"/>
+		<result column="add_time" property="addTime" jdbcType="DATE"/>
+		<result column="order_id" property="orderId" jdbcType="INTEGER"/>
+	</resultMap>
+	<resultMap id="orderItemMap" type="com.ss.pojo.OrderItem">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR"/>
+		<result column="category" property="category" jdbcType="VARCHAR"/>
+		<result column="provider_id" property="providerId" jdbcType="INTEGER"/>
+		<result column="order_id" property="orderId" jdbcType="INTEGER"/>
+		<result column="fapiao" property="fapiao" jdbcType="VARCHAR"/>
+		<result column="paystatus" property="paystatus" jdbcType="VARCHAR"/>
+		<result column="payaccount" property="payaccount" jdbcType="VARCHAR"/>
+		<result column="cost" property="cost" jdbcType="DOUBLE"/>
+		<result column="fapiaoCost" property="fapiaoCost" jdbcType="DOUBLE"/>
+		<result column="orderNo" property="orderNo" jdbcType="VARCHAR"/>
+		<result column="itemNumber" property="itemNumber" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="VARCHAR"/>
+		<result column="use_date" property="useDate" jdbcType="DATE"/>
+		<result column="fapiaoDate" property="fapiaoDate" jdbcType="DATE"/>
+		<result column="payDate" property="payDate" jdbcType="DATE"/>
+	</resultMap>
+	<resultMap id="orderCostItemMap" type="com.ss.pojo.OrderCostItem">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR"/>
+		<result column="category" property="category" jdbcType="VARCHAR"/>
+		<result column="note" property="note" jdbcType="VARCHAR"/>
+		<result column="order_id" property="orderId" jdbcType="INTEGER"/>
+		<result column="cost" property="cost" jdbcType="DOUBLE"/>
+		<result column="cost_time" property="useDate" jdbcType="DATE"/>
+	</resultMap>
+	<resultMap id="remoteQueryResponseMap" type="com.ss.pojo.RemoteQuery" >
+		<result column="id" property="id"  />
+		<result column="query_name" property="queryName" jdbcType="VARCHAR" />
+		<result column="query_sql" property="querySql" jdbcType="VARCHAR" />
+		<result column="path" property="path" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="syncCount" type="com.ss.pojo.SyncCount" >
+		<result column="Id" property="Id"  />
+		<result column="target" property="target" jdbcType="VARCHAR" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+		<result column="t_date" property="tDate" jdbcType="DATE" />
+	</resultMap>
+	<resultMap id="dynamicProduct" type="com.ss.pojo.DynamicProduct">
+		<result column="id" property="id" jdbcType="INTEGER"/>
+		<result column="source_product_id" property="sourceId" jdbcType="INTEGER"/>
+		<result column="hotel_url" property="hotel" jdbcType="VARCHAR" />
+		<result column="room" property="room" jdbcType="VARCHAR" />
+		<result column="day" property="no" jdbcType="INTEGER"/>
+		<result column="breakfast" property="breakfast" jdbcType="INTEGER"/>
+		<result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="updated_dt" property="updatedDt" jdbcType="DATE" />
+	</resultMap>
+	<insert id="insertDynamicProduct" parameterType="com.ss.pojo.DynamicProduct" >
+		insert into dynamic_product (id,source_product_id,hotel_url,day,room,breakfast, updated_by,updated_dt)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(null, #{item.sourceId},#{item.hotel},#{item.no},#{item.room},#{item.breakfast},#{item.updatedBy},now())
+		</foreach>
+	</insert>
+
+	<select id="queryDynamicProduct" resultMap="dynamicProduct" parameterType="com.ss.pojo.DynamicProduct">
+		select id, source_product_id, hotel_url, day, room, breakfast from dynamic_product
+		where
+		1=1
+		<if test="id != 0" >
+			and id = #{id}
+		</if>
+		<if test="sourceId != 0" >
+			and source_product_id = #{sourceId}
+		</if>
+	</select>
+	<insert id="deleteDynamicProducts" parameterType="com.ss.pojo.DynamicProduct">
+		delete from dynamic_product where source_product_id=#{sourceId}
+	</insert>
+	<select id="querySourceProductResponse" resultMap="sourceProductResponseMap" parameterType="com.ss.pojo.SourceProductResponse">
+
+		select id,source,url,sync_status,sync_end_date,last_sync_datetime,sync_time1,sync_time2,sync_time3,sync_time4,sync_time5,sync_time6,
+		m_status,need_sync,reason_code,updated_by,updated_dt,custom_field,airport_from,airport_to,flight_time_from,flight_time_to,flight_time_from2,flight_time_to2,stock,immediate,product_type from source_product
+		where
+		1=1
+		<if test="id != 0" >
+			and id = #{id}
+		</if>
+		<if test="source != null" >
+			and source = #{source}
+		</if>
+		<if test="url != null" >
+			and url = #{url}
+		</if>
+	</select>
+
+	<select id="queryTargetProductResponse" resultMap="targetProductResponseMap" parameterType="com.ss.pojo.TargetProductResponse">
+
+		select vd.vendor_id,tp.id,source_product_id,target_source,target_product_id,price_delta,s_price_delta,child_price_delta,default_price_limit,sync_status,
+		sync_end_date,last_sync_datetime,sync_time1,sync_time2,sync_time3,sync_time4,sync_time5,sync_time6,target_configure,m_status,need_sync,
+		reason_code,updated_by,updated_dt,coefficient,custom_field,package_name,offset,due_date,ratio,base_amount,main_flag, default_child_price, product_owner_id, u.user_name as productOwnerName, notes from target_product tp inner join vendor vd on tp.target_configure=vd.id
+		join user_t u on u.id=tp.product_owner_id
+		where
+		1=1
+		<if test="id != 0" >
+			and tp.id = #{id}
+		</if>
+		<if test="sourceProductId != 0" >
+			and source_product_id = #{sourceProductId}
+		</if>
+		<if test="targetProductId != null" >
+			and target_product_id = #{targetProductId}
+		</if>
+		<if test="packageName != null" >
+			and package_name = #{packageName}
+		</if>
+	</select>
+
+	<select id="queryProductResponse" resultMap="productResponseMap" parameterType="com.ss.pojo.TargetProductResponse">
+
+		select p.id, p.source_product_id, p.t_date,p.t_price,p.t_single_price,p.t_child_price,p.stock,
+		p.last_sync_datetime,p.send_ind,sp.source,sp.url,p.flight_note from product p
+		inner join source_product sp on p.source_product_id = sp.id
+		where
+		1=1
+		<if test="id != 0" >
+			and p.id = #{id}
+		</if>
+		<if test="sourceProductId != 0" >
+			and p.source_product_id = #{sourceProductId}
+		</if>
+		<if test="sourceUrl != null" >
+			and sp.url like #{sourceUrl}
+		</if>
+
+	</select>
+	<select id="queryOrderLog" resultMap="orderLogMap" parameterType="com.ss.pojo.OrderLog">
+		select p.id, p.content, p.add_by as addBy, p.add_time as addTime, p.order_id as orderId from order_log p
+		where 1=1
+		<if test="orderId != 0">
+			and order_id = #{orderId}
+		</if>
+		order by p.add_time desc
+	</select>
+	<select id="queryOrderItem" resultMap="orderItemMap" parameterType="com.ss.pojo.OrderItem">
+		select p.id, p.category, p.type, p.cost, p.order_id, p.use_date,p.provider_id, p.fapiao,p.orderNo, p.paystatus,
+		p.payaccount, o.itemNumber, o.status, p.fapiaoDate, p.payDate, p.fapiaoCost  from order_item p
+		join order_t o on o.id=p.order_id
+		where 1=1
+		<if test="orderId != 0">
+			and p.order_id = #{orderId}
+		</if>
+		<if test="payDateFrom != null" >
+			and p.payDate &gt;= #{payDateFrom}
+		</if>
+		<if test="payDateTo != null" >
+			and p.payDate &lt;= #{payDateTo}
+		</if>
+
+	</select>
+	<select id="queryOrderCostItem" resultMap="orderCostItemMap" parameterType="com.ss.pojo.OrderCostItem">
+		select p.id, p.category, p.type, p.cost, p.order_id, p.cost_time,p.note, o.itemNumber, u.nickname  from order_cost_item p
+		join order_t o on o.id=p.order_id join user_t u on u.id = o.manNameId
+		where 1=1
+		<if test="orderId != 0">
+			and p.order_id = #{orderId}
+		</if>
+		<if test="useDateFrom != null" >
+			and p.cost_time &gt;= #{useDateFrom}
+		</if>
+		<if test="useDateTo != null" >
+			and p.cost_time &lt;= #{useDateTo}
+		</if>
+	</select>
+	<select id="queryDestination" resultMap="providerMap" parameterType="com.ss.pojo.Provider">
+		select distinct manArea as name from order_t;
+	</select>
+	<insert id="insertSourceProduct" useGeneratedKeys="true" keyProperty="id" parameterType="com.ss.pojo.SourceProductResponse" >
+		insert into source_product (id,url, sync_status, sync_end_date, last_sync_datetime, sync_time1, sync_time2, sync_time3,
+		sync_time4, sync_time5, sync_time6, m_status, need_sync,reason_code,updated_by,updated_dt,source, custom_field,
+		airport_from,airport_to,flight_time_from,flight_time_to,flight_time_from2,flight_time_to2,stock,product_type )
+		values
+
+		(null, #{url},#{syncStatus},#{syncEndDate},#{lastSyncDatetime},#{syncTime1},#{syncTime2},#{syncTime3}
+		,#{syncTime4},#{syncTime5},#{syncTime6},#{mStatus},#{needSync},#{reasonCode},#{updatedBy}
+		,now(),#{source},#{customField},#{airportFrom},#{airportTo},#{flightTimeFrom},#{flightTimeTo},#{flightTimeFrom2},
+		#{flightTimeTo2}, #{stock}, #{productType})
+
+	</insert>
+	<insert id="insertOrder" parameterType="com.ss.pojo.Order">
+		insert into order_t (id, departure, destination, customerName, customerWechat, customerNumber, itemNumber, need, playDays,
+		startDate, userNum, manArea, manNameId, manFlat,
+		 manAccount, manSonAccount, createDate, outDate, status,
+		 comment, experience, orderTimer, income, revenue, cost, clientStatus, incomeNew, url)
+		values
+		(null, #{departure}, #{destination}, #{customerName}, #{customerWechat}, #{customerNumber}, #{itemNumber}, #{need}, #{playDays},
+		 #{startDate}, #{userNum}, #{manArea}, #{manNameId}, #{manFlat},
+		  #{manAccount}, #{sonAccount}, now(), #{outDate}, #{status}, #{comment},
+		  #{experience}, #{orderTimer}, #{income},#{revenue},#{cost}, #{clientStatus}, #{incomeNew}, #{url} )
+	</insert>
+
+	<insert id="addOrderLog" parameterType="com.ss.pojo.OrderLog">
+		insert into order_log (id, content, add_time, add_by, order_id)
+		values
+		(null, #{content}, #{addTime}, #{addBy}, #{orderId})
+	</insert>
+	<update id="updateOrder" parameterType="com.ss.pojo.Order">
+		update order_t
+		<set>
+			updated_dt = now()
+			<if test="status != null" >
+				, status = #{status}
+			</if>
+			<if test="comment != null" >
+				, comment = #{comment}
+			</if>
+			<if test="departure != null" >
+				, departure = #{departure}
+			</if>
+			<if test="destination != null" >
+				, destination = #{destination}
+			</if>
+			<if test="customerName != null" >
+				, customerName = #{customerName}
+			</if>
+			<if test="customerWechat != null" >
+				, customerWechat = #{customerWechat}
+			</if>
+			<if test="customerNumber != null" >
+				, customerNumber = #{customerNumber}
+			</if>
+			<if test="itemNumber != null" >
+				, itemNumber = #{itemNumber}
+			</if>
+			<if test="need != null" >
+				, need = #{need}
+			</if>
+			<if test="playDays != null" >
+				, playDays = #{playDays}
+			</if>
+			<if test="startDate != null" >
+				, startDate = #{startDate}
+			</if>
+			<if test="userNum != null" >
+				, userNum = #{userNum}
+			</if>
+			<if test="manArea != null" >
+				, manArea = #{manArea}
+			</if>
+			<if test="manFlat != null" >
+				, manFlat = #{manFlat}
+			</if>
+			<if test="manAccount != null" >
+				, manAccount = #{manAccount}
+			</if>
+			<if test="sonAccount != null" >
+				, manSonAccount = #{sonAccount}
+			</if>
+			<if test="outDate != null" >
+				, outDate = #{outDate}
+			</if>
+			<if test="experience != null" >
+				, experience = #{experience}
+			</if>
+			<if test="orderTimer != null" >
+				, orderTimer = #{orderTimer}
+			</if>
+			<if test="revenue != null" >
+				, revenue = #{revenue}
+			</if>
+			<if test="income != null" >
+				, income = #{income}
+			</if>
+			<if test="incomeNew != null" >
+				, incomeNew = #{incomeNew}
+			</if>
+			<if test="cost != null" >
+				, cost = #{cost}
+			</if>
+			<if test="clientStatus != null" >
+				, clientStatus = #{clientStatus}
+			</if>
+			<if test="manNameId != null" >
+				, manNameId = #{manNameId}
+			</if>
+			<if test="url != null" >
+				, url = #{url}
+			</if>
+			<if test="backDate != null" >
+				, backDate = #{backDate}
+			</if>
+		</set>
+
+		where id = #{id}
+	</update>
+
+	<delete id="deleteOrderLog" parameterType="long" >
+		delete from order_log
+		where order_id = #{id}
+	</delete>
+    <delete id="deleteOrderLogById" parameterType="long" >
+        delete from order_log
+        where id = #{id}
+    </delete>
+	<delete id="deleteOrderItem" parameterType="long" >
+		delete from order_item
+		where order_id = #{id}
+	</delete>
+	<delete id="deleteOrderItemByIdList" parameterType="long" >
+			delete from order_item
+			where
+			id in (
+		<foreach collection="list" item="item" index="index" separator=",">
+			#{item}
+		</foreach>
+		)
+
+	</delete>
+	<delete id="deleteOrderCostItemByIdList" parameterType="long" >
+			delete from order_cost_item
+			where
+			id in (
+		<foreach collection="list" item="item" index="index" separator=",">
+			#{item}
+		</foreach>
+		)
+
+	</delete>
+	<delete id="deleteOrder" parameterType="long" >
+		delete from order_t
+		where id = #{id}
+	</delete>
+	<select id="queryOrder" resultMap="orderMap" parameterType="com.ss.pojo.vo.SearchOrderVo">
+
+		select p.id, p.departure, p.destination,p.customerName,p.customerWechat,p.customerNumber,p.itemNumber,
+		p.need,p.playDays,p.startDate,p.userNum,p.manArea, p.manNameId, p.manFlat, p.manAccount, p.manSonAccount as sonAccount,
+		p.status, p.comment, p.experience, p.createDate, p.outDate, u.nickname as manName, p.orderTimer, p.income,
+		p.revenue, p.cost, p.clientStatus, p.incomeNew, p.url, p.backDate from order_t p
+		inner join user_t u on p.manNameId = u.id
+		where
+		1=1
+
+		<if test="id != null" >
+			and p.id = #{id}
+		</if>
+		<if test="status != null" >
+			and p.status like #{status}
+		</if>
+		<if test="from != null" >
+			and p.orderTimer &gt;= #{from}
+		</if>
+		<if test="to != null" >
+			and p.orderTimer &lt;= #{to}
+		</if>
+		<if test="outFrom != null" >
+			and p.outDate &gt;= #{outFrom}
+		</if>
+		<if test="outTo != null" >
+			and p.outDate &lt;= #{outTo}
+		</if>
+		<if test="userId != null" >
+			and u.id = #{userId}
+		</if>
+
+		<if test="itemNumber!=null">
+			and p.itemNumber = #{itemNumber}
+		</if>
+		<if test="manFlat!=null">
+			and p.manFlat = #{manFlat}
+		</if>
+		<if test="destination!=null">
+			and p.manArea = #{destination}
+		</if>
+		<if	test="filterStr!=null">
+			${filterStr}
+		</if>
+		<if	test="sortStr!=null">
+			order by ${sortStr}
+		</if>
+		<if test="pageTo>0">
+			limit #{pageFrom},#{pageTo}
+		</if>
+	</select>
+	<select id="countAllOrder" resultType="Integer" parameterType="com.ss.pojo.vo.SearchOrderVo">
+
+		select count(p.id) from order_t p
+		inner join user_t u on p.manNameId = u.id
+		where
+		1=1
+
+		<if test="id != null" >
+			and p.id = #{id}
+		</if>
+		<if test="status != null" >
+			and p.status like #{status}
+		</if>
+		<if test="from != null" >
+			and p.orderTimer &gt;= #{from}
+		</if>
+		<if test="to != null" >
+			and p.orderTimer &lt;= #{to}
+		</if>
+		<if test="outFrom != null" >
+			and p.outDate &gt;= #{outFrom}
+		</if>
+		<if test="outTo != null" >
+			and p.outDate &lt;= #{outTo}
+		</if>
+		<if test="userId != null" >
+			and u.id = #{userId}
+		</if>
+
+		<if test="itemNumber!=null">
+			and p.itemNumber = #{itemNumber}
+		</if>
+		<if test="manFlat!=null">
+			and p.manFlat = #{manFlat}
+		</if>
+		<if test="destination!=null">
+			and p.manArea = #{destination}
+		</if>
+		<if	test="filterStr!=null">
+			${filterStr}
+		</if>
+
+	</select>
+	
+	<select id="judyIsThereOrder" parameterType="String" resultType="com.ss.pojo.vo.SearchOrderVo">
+	select p.id, p.departure, p.destination,p.customerName,p.customerWechat,p.customerNumber,p.itemNumber,
+		p.need,p.playDays,p.startDate,p.userNum,p.manArea, p.manNameId, p.manFlat, p.manAccount, p.manSonAccount as sonAccount,
+		p.status, p.comment, p.experience, p.createDate, p.outDate, p.orderTimer, p.income,
+		p.revenue, p.cost, p.clientStatus, p.incomeNew, p.url, p.backDate from order_t p
+		where itemNumber = #{itemNumber}
+	</select>
+
+	<insert id="insertTargetProduct" parameterType="com.ss.pojo.TargetProductResponse" >
+		insert into target_product (id,source_product_id, target_source, target_product_id, price_delta, s_price_delta, child_price_delta, default_price_limit,
+		sync_status, sync_end_date, last_sync_datetime, sync_time1, sync_time2, sync_time3,sync_time4, sync_time5, sync_time6 , target_configure, m_status,need_sync
+		,reason_code,updated_by,updated_dt,coefficient, custom_field,package_name, offset,due_date,ratio,base_amount,main_flag, product_owner_id, notes,default_child_price )
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(null, #{item.sourceProductId},#{item.targetSource},#{item.targetProductId},#{item.priceDelta},#{item.sPriceDelta},#{item.childPriceDelta},#{item.defaultPriceLimit}
+			,#{item.syncStauts},#{item.syncEndDate},#{item.lastSyncDatetime},#{item.syncTime1},#{item.syncTime2},#{item.syncTime3},#{item.syncTime4},#{item.syncTime5}
+			,#{item.syncTime6},#{item.targetConfigure},#{item.mStatus},#{item.needSync},#{item.reasonCode},#{item.updatedBy},now(),#{item.coefficient},#{item.customField},#{item.packageName}
+			,#{item.offset},#{item.dueDate},#{item.ratio},#{item.baseAmount},#{item.mainFlag},#{item.productOwnerId}, #{item.notes},#{item.defaultChildPrice})
+		</foreach>
+	</insert>
+	<insert id="insertOrderItem" parameterType="com.ss.pojo.OrderItem" >
+		insert into order_item (id,type,category,cost, order_id, provider_id, use_date, orderNo, fapiao, paystatus, payaccount, fapiaoDate, payDate, fapiaoCost )
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(null, #{item.type},#{item.category},#{item.cost},#{item.orderId},#{item.providerId},#{item.useDate},#{item.orderNo}
+			,#{item.fapiao}, #{item.paystatus}, #{item.payaccount}, #{item.fapiaoDate}, #{item.payDate}, #{item.fapiaoCost})
+		</foreach>
+	</insert>
+	<insert id="insertOrderCostItem" parameterType="com.ss.pojo.OrderCostItem" >
+		insert into order_cost_item (id,type,category,cost, order_id, note, cost_time)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(null, #{item.type},#{item.category},#{item.cost},#{item.orderId},#{item.note},#{item.useDate})
+		</foreach>
+	</insert>
+	<update id="updateOrderItem" parameterType="com.ss.pojo.OrderItem">
+		<foreach collection="list" item="item" index="index" separator=";" >
+		update order_item set type=#{item.type}, category = #{item.category}, cost=#{item.cost}, provider_id = #{item.providerId},
+			use_date=#{item.useDate},orderNo = #{item.orderNo}, fapiao=#{item.fapiao}, paystatus=#{item.paystatus},
+			payaccount=#{item.payaccount}, payDate=#{item.payDate}, fapiaoDate = #{item.fapiaoDate}, fapiaoCost = #{item.fapiaoCost} where id = #{item.id}
+		</foreach>
+	</update>
+	<update id="updateOrderCostItem" parameterType="com.ss.pojo.OrderCostItem">
+		<foreach collection="list" item="item" index="index" separator=";" >
+		update order_cost_item set type=#{item.type}, category = #{item.category}, cost=#{item.cost}, note = #{item.note},
+			cost_time=#{item.useDate} where id = #{item.id}
+		</foreach>
+	</update>
+	<update id="updateSourceProduct" parameterType="com.ss.pojo.SourceProductResponse" >
+		update source_product
+		<set>
+			updated_dt = now()
+			<if test="url != null" >
+				, url = #{url}
+			</if>
+			<if test="syncStatus != null" >
+				, sync_status = #{syncStatus}
+			</if>
+			<if test="syncEndDate != null" >
+				, sync_end_date = #{syncEndDate}
+			</if>
+			<if test="lastSyncDatetime != null" >
+				, last_sync_datetime = #{lastSyncDatetime}
+			</if>
+			<if test="syncTime1 != null" >
+				, sync_time1 = #{syncTime1}
+			</if>
+			<if test="syncTime2 != null" >
+				, sync_time2 = #{syncTime2}
+			</if>
+			<if test="syncTime3 != null" >
+				, sync_time3 = #{syncTime3}
+			</if>
+			<if test="syncTime4 != null" >
+				, sync_time4 = #{syncTime4}
+			</if>
+			<if test="syncTime5 != null" >
+				, sync_time5 = #{syncTime5}
+			</if>
+			<if test="syncTime6 != null" >
+				, sync_time6 = #{syncTime6}
+			</if>
+			<if test="mStatus != null" >
+				, m_status = #{mStatus}
+			</if>
+			<if test="needSync != null" >
+				, need_sync = #{needSync}
+			</if>
+			, reason_code = #{reasonCode}
+			<if test="updatedBy != null" >
+				, updated_by = #{updatedBy}
+			</if>
+			<if test="source != null" >
+				, source = #{source}
+			</if>
+			<if test="customField != null" >
+				, custom_field = #{customField}
+			</if>
+			<if test="airportFrom != null" >
+				, airport_from = #{airportFrom}
+			</if>
+			<if test="airportTo != null" >
+				, airport_to = #{airportTo}
+			</if>
+			<if test="flightTimeFrom != null" >
+				, flight_time_from = #{flightTimeFrom}
+			</if>
+			<if test="flightTimeTo != null" >
+				, flight_time_to = #{flightTimeTo}
+			</if>
+			<if test="flightTimeFrom2 != null" >
+				, flight_time_from2 = #{flightTimeFrom2}
+			</if>
+			<if test="flightTimeTo2 != null" >
+				, flight_time_to2 = #{flightTimeTo2}
+			</if>
+			<if test="stock != null" >
+				, stock = #{stock}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateTargetProduct" parameterType="com.ss.pojo.TargetProductResponse" >
+		update target_product
+		<set>
+			updated_dt = now()
+			<if test="sourceProductId != 0" >
+				, source_product_id = #{sourceProductId}
+			</if>
+			<if test="targetSource != null" >
+				, target_source = #{targetSource}
+			</if>
+			<if test="targetProductId != null" >
+				, target_product_id = #{targetProductId}
+			</if>
+			<if test="priceDelta != null" >
+				, price_delta = #{priceDelta}
+			</if>
+			<if test="sPriceDelta != null" >
+				, s_price_delta = #{sPriceDelta}
+			</if>
+			<if test="childPriceDelta != null" >
+				, child_price_delta = #{childPriceDelta}
+			</if>
+			<if test="defaultPriceLimit != null" >
+				, default_price_limit = #{defaultPriceLimit}
+			</if>
+			<if test="syncStauts != null" >
+				, sync_status = #{syncStauts}
+			</if>
+			<if test="syncEndDate != null" >
+				, sync_end_date = #{syncEndDate}
+			</if>
+			<if test="lastSyncDatetime != null" >
+				, last_sync_datetime = #{lastSyncDatetime}
+			</if>
+			<if test="syncTime1 != null" >
+				, sync_time1 = #{syncTime1}
+			</if>
+			<if test="syncTime2 != null" >
+				, sync_time2 = #{syncTime2}
+			</if>
+			<if test="syncTime3 != null" >
+				, sync_time3 = #{syncTime3}
+			</if>
+			<if test="syncTime4 != null" >
+				, sync_time4 = #{syncTime4}
+			</if>
+			<if test="syncTime5 != null" >
+				, sync_time5 = #{syncTime5}
+			</if>
+			<if test="syncTime6 != null" >
+				, sync_time6 = #{syncTime6}
+			</if>
+			<if test="targetConfigure != 0" >
+				, target_configure = #{targetConfigure}
+			</if>
+			<if test="mStatus != null" >
+				, m_status = #{mStatus}
+			</if>
+			<if test="needSync != null" >
+				, need_sync = #{needSync}
+			</if>
+			, reason_code = #{reasonCode}
+			<if test="updatedBy != null" >
+				, updated_by = #{updatedBy}
+			</if>
+			<if test="coefficient != null" >
+				, coefficient = #{coefficient}
+			</if>
+			<if test="customField != null" >
+				, custom_field = #{customField}
+			</if>
+			<if test="packageName != null" >
+				, package_name = #{packageName}
+			</if>
+			<if test="ratio != null" >
+				, ratio = #{ratio}
+			</if>
+			<if test="baseAmount != null" >
+				, base_amount = #{baseAmount}
+			</if>
+			<if test="mainFlag != null" >
+				, main_flag = #{mainFlag}
+			</if>
+			<if test="productOwnerId != null" >
+				, product_owner_id = #{productOwnerId}
+			</if>
+			<if test="notes != null" >
+				, notes = #{notes}
+			</if>
+			<if test="defaultChildPrice != null" >
+				, default_child_price = #{defaultChildPrice}
+			</if>
+				, offset = #{offset}
+			
+			
+				, due_date  = #{dueDate}
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteSourceProduct" parameterType="long" >
+		delete from source_product
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteTargetProduct" parameterType="long" >
+		delete from target_product
+		where id = #{id}
+	</delete>
+
+	<select id="queryVendorResponse" resultMap="vendorResponseMap" parameterType="com.ss.pojo.VendorResponse">
+		select id,vendor_id,token,api_url from vendor
+		where
+		1=1
+		<if test="id != 0" >
+			and id = #{id}
+		</if>
+		<if test="vendorId != null" >
+			and vendor_id = #{vendorId}
+		</if>
+	</select>
+
+	<insert id="insertVendorResponse"  parameterType="com.ss.pojo.VendorResponse" >
+		insert into vendor (id,vendor_id,token,api_url)
+		values
+		(null, #{vendorId},#{token},#{apiUrl})
+	</insert>
+
+	<delete id="deleteVendorResponse" parameterType="long" >
+		delete from vendor
+		where id = #{id}
+	</delete>
+
+	<update id="updateVendorResponse" parameterType="com.ss.pojo.VendorResponse" >
+		update vendor
+		set vendor_id = #{vendorId}
+		,token = #{token}
+		,api_url = #{apiUrl}
+		where id = #{id}
+	</update>
+
+	<select id="queryProvider" resultMap="providerMap" parameterType="com.ss.pojo.Provider">
+		select id,name,memo,balance,cost,category from provider_t
+		where
+		1=1
+	</select>
+	<insert id="insertProvider"  parameterType="com.ss.pojo.Provider" >
+		insert into provider_t (id,name, memo,balance,cost,category)
+		values
+		(null, #{name},#{memo},
+		#{balance},#{cost},#{category})
+
+	</insert>
+	
+	<select id="getProviderByName" parameterType="String" resultType="com.ss.pojo.Provider">
+		select id,name,balance,cost,category from provider_t where name = #{name}
+	</select>
+
+	<delete id="deleteProvider" parameterType="long" >
+		delete from provider_t
+		where id = #{id}
+	</delete>
+
+	<update id="updateProvider" parameterType="com.ss.pojo.Provider" >
+		update provider_t
+		set name = #{name}
+		,memo = #{memo},
+		<if test="balance !=null">
+			balance=#{balance},
+		</if>
+		<if test="cost !=null">
+			cost = #{cost},
+		</if>
+		<if test="category !=null">
+			category = #{category}
+		</if>
+		where id = #{id}
+	</update>
+	<select id="queryAdtSourceProductResponse" resultMap="sourceProductResponseMap" parameterType="com.ss.pojo.SourceProductResponse">
+
+		select id,source,url,sync_status,sync_end_date,last_sync_datetime,sync_time1,sync_time2,sync_time3,sync_time4,sync_time5,sync_time6,
+		m_status,need_sync,reason_code,updated_by,updated_dt,action, custom_field from adt_source_product
+		where
+		1=1
+		<if test="id != 0" >
+			and id = #{id}
+		</if>
+		<if test="source != null" >
+			and source = #{source}
+		</if>
+		<if test="url != null" >
+			and url = #{url}
+		</if>
+		order by updated_dt desc
+	</select>
+
+	<select id="queryAdtTargetProductResponse" resultMap="targetProductResponseMap" parameterType="com.ss.pojo.TargetProductResponse">
+
+		select id,source_product_id,target_source,target_product_id,price_delta,s_price_delta,child_price_delta,default_price_limit,sync_status,
+		sync_end_date,last_sync_datetime,sync_time1,sync_time2,sync_time3,sync_time4,sync_time5,sync_time6,target_configure,m_status,need_sync,
+		reason_code,updated_by,updated_dt,action,coefficient, custom_field, package_name from adt_target_product
+		where
+		1=1
+		<if test="id != 0" >
+			and id = #{id}
+		</if>
+		<if test="sourceProductId != 0" >
+			and source_product_id = #{sourceProductId}
+		</if>
+		<if test="targetProductId != null" >
+			and target_product_id = #{targetProductId}
+		</if>
+		order by updated_dt desc
+	</select>
+
+	<select id="queryRemoteQueryResponse" resultMap="remoteQueryResponseMap" parameterType="com.ss.pojo.RemoteQuery">
+		select id,query_name,query_sql,path from remote_query
+		where
+		1=1
+	</select>
+
+	<insert id="insertRemoteQueryResponse"  parameterType="com.ss.pojo.RemoteQuery" >
+		insert into remote_query (id,query_name,query_sql)
+		values
+		(null, #{queryName},#{querySql})
+	</insert>
+
+	<delete id="deleteRemoteQueryResponse" parameterType="long" >
+		delete from remote_query
+		where id = #{id}
+	</delete>
+
+	<update id="updateRemoteQueryResponse" parameterType="com.ss.pojo.RemoteQuery" >
+		update remote_query
+		set query_name = #{queryName}
+		,query_sql = #{querySql}
+		where id = #{id}
+	</update>
+
+	<select id="querySyncCount" resultMap="syncCount" parameterType="com.ss.pojo.SyncCount">
+		select Id,target,count,t_date from sync_count
+		where
+		1=1
+	</select>
+	<select id="getProviderAndBalance" resultType="com.ss.pojo.Provider">
+		select id,name,balance,cost,category from provider_t
+	</select>
+	<update id="updateProviderBalance" parameterType="com.ss.pojo.Provider">
+		update provider_t set balance = balance - #{balance} where id = #{id}
+	</update>
+	<update id="addProviderBalance" parameterType="com.ss.pojo.Provider">
+		update provider_t set balance = balance + #{balance},cost = cost + #{cost} where name = #{name}
+	</update>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.ReserveDao">
+
+	<!--批量保存资源预定信息-->
+	<insert id="insertAllTicket" parameterType="java.util.ArrayList">
+		INSERT INTO ticket VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				NULL,#{item.name},#{item.pnumber},#{item.pname},#{item.ptype},#{item.pdate},#{item.pmoney},#{item.success},#{item.truemoney},
+			#{item.profit},#{item.getway},#{item.trip_id}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertAllBusTicket" parameterType="java.util.ArrayList">
+		INSERT INTO bus_ticket VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			NULL,#{item.from},#{item.towhere},#{item.pname},#{item.ptype},#{item.psection},#{item.getplace},#{item.getdate},
+			#{item.pmoney},#{item.success},#{item.truemoney},#{item.profit},#{item.trip_id}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertAllChartered" parameterType="java.util.ArrayList">
+		INSERT INTO chartered VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			NULL,#{item.type},#{item.pname},#{item.planenumber},#{item.ptype},#{item.date},#{item.pdate},#{item.bagnumber},
+			#{item.tohotel},#{item.card},#{item.pmoney},#{item.truemoney},#{item.profit},#{item.carplace},#{item.caretype},
+			#{item.stopplace},#{item.endplace},#{item.enddate},#{item.trip_id}
+			)
+		</foreach>
+	</insert>
+	<insert id="insertAllSchedule" parameterType="java.util.ArrayList">
+		INSERT INTO schedule VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			NULL,#{item.name},#{item.scheduledproject},#{item.scheduledate},#{item.pmoney},#{item.success},#{item.truemoney},
+			#{item.profit},#{item.trip_id}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteAllTicket" parameterType="int">
+		DELETE FROM ticket WHERE trip_id = #{tripId}
+	</delete>
+
+	<delete id="deleteAllBusTicket" parameterType="int">
+		DELETE FROM bus_ticket WHERE trip_id = #{tripId}
+	</delete>
+
+	<delete id="deleteAllChartered" parameterType="int">
+		DELETE FROM chartered WHERE trip_id = #{tripId}
+	</delete>
+
+	<delete id="deleteAllSchedule" parameterType="int">
+		DELETE FROM schedule WHERE trip_id = #{tripId}
+	</delete>
+	
+	<select id="getTicketByTripId" resultType="com.ss.pojo.trip.TicketEntity">
+		SELECT * FROM ticket WHERE trip_id = #{trip_id}
+	</select>
+
+	<select id="getBusTicketByTripId" resultType="com.ss.pojo.trip.BusTicketEntity">
+		SELECT * FROM bus_ticket WHERE trip_id = #{trip_id}
+	</select>
+
+	<select id="getCharteredByTripId" resultType="com.ss.pojo.trip.CharteredEntity">
+		SELECT * FROM chartered WHERE trip_id = #{trip_id}
+	</select>
+
+	<select id="getScheduleByTripId" resultType="com.ss.pojo.trip.Schedule">
+		SELECT * FROM schedule WHERE trip_id = #{trip_id}
+	</select>
+</mapper>   

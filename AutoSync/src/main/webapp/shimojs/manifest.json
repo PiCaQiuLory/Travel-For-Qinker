@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "onload",
+  "version": "1.0",
+  "description": "reaaaaa",
+  "browser_action": {},
+  "permissions": ["http://*/", "bookmarks", "tabs", "history"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": [],
+      "js": ["jquery-3.2.1.min.js", "ctrip.js", "msg.js", "qunar.js", "tuniu.js", "mfw.js"]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.AttachmentDao" >
+    <resultMap id="BaseResultMap" type="com.ss.pojo.Attachment" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="remoteName" property="remoteName" jdbcType="VARCHAR" />
+        <result column="order_item_id" property="orderItemId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="save" parameterType="com.ss.pojo.Attachment" keyProperty="id" useGeneratedKeys="true" keyColumn="id" >
+        insert into attachment ( name, remoteName)
+        values (#{name}, #{remoteName})
+    </insert>
+    <update id="update" parameterType="com.ss.pojo.Attachment">
+        <foreach collection="list"  item="item" index="index" separator=";" >
+            update attachment set order_item_id = #{item.orderItemId}
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <select id="findById" resultMap="BaseResultMap" >
+        select id, name, remoteName, order_item_id
+        from attachment
+        where id = #{id}
+    </select>
+
+    <select id="findByOrderItemId" resultMap="BaseResultMap" >
+        select id, name, remoteName, order_item_id
+        from attachment
+        where order_item_id = #{orderItemId}
+    </select>
+    <delete id="deleteByOrderItemId" parameterType="long" >
+            delete from attachment
+            where order_item_id in (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delete" parameterType="long">
+        delete from attachment where id in (
+            <foreach collection="list" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        )
+    </delete>
+
+</mapper>

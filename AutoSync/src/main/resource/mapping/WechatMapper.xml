@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ss.mapper.WechatDao" >
+  <resultMap id="BaseResultMap" type="com.ss.pojo.app.AppWechat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="BLOB" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+    <result column="app_wechat_id" property="appWechatId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="appFindByName" parameterType="String" resultType="Integer">
+  	select id from user_t where nickname = #{username}
+  </select>
+  
+  <insert id="appUserLogin" parameterType="com.ss.pojo.app.AppWechat">
+  	insert into app_wechat values(null,#{wechatId},#{userId})
+  </insert>
+  
+  <insert id="addContent" parameterType="com.ss.pojo.app.AppData">
+  	insert into app_content values(id,wechat_id,content,type,timestamp,app_wechat_id,owner,filename)
+  	<foreach collection="list" index="index" item="item" separator=",">
+  		(null,#{item.wechatId},#{item.content},#{item.type},#{item.time},#{item.appWechatId},#{item.owner},#{item.filename})
+  	</foreach>
+  </insert>
+  
+  <select id="getIdByWechatId" parameterType="String" resultType="Integer">
+  	select id from app_wechat where wechat_id = #{IEMI}
+  </select>
+  
+  <insert id="addFile" parameterType="com.ss.pojo.app.AppFile">
+  	insert into app_file values (null,#{fileName},#{url})
+  </insert>
+  
+  <insert id="addFiles">
+  	insert into app_file values
+  	<foreach collection="list" separator="," item="item" index="index">
+  		(
+  			null,#{item.fileName},#{item.url}
+  		)
+  	</foreach>
+  </insert>
+  
+  <select id="getBytes" resultType="com.ss.pojo.app.AppFile">
+  	select id,filename as fileName,content from app_file where id = 1
+  </select>
+  
+  <select id="getAllPhone" resultType="com.ss.pojo.app.AppWechat">
+  	SELECT aw.id,aw.wechat_id as wechatId,ut.nickname as username from app_wechat as 
+  	aw INNER JOIN user_t as ut on aw.u_id = ut.id 
+  </select>
+  <select id="getContentByWechatId" resultType="com.ss.pojo.app.AppDataPo" parameterType="Integer">
+  	SELECT ac.id,ac.wechat_id as wechatId,ac.content,ac.type,ac.`timestamp`,ac.`owner`,af.filename,af.url  from app_content as ac LEFT JOIN app_file as af on ac.content = af.filename 
+  	WHERE ac.app_whcat_id = #{appwechatId} ORDER BY ac.timestamp
+  </select>
+  
+  <insert id="insertOutLineLog" parameterType="com.ss.pojo.app.AppLog">
+  	insert into app_log values(null,#{wechatId},#{msg},#{time})
+  </insert>
+  
+  <select id="findByWechatId" parameterType="String" resultType="Integer">
+  	select id from app_wechat where wechat_id = #{wechatId}
+  </select>
+  
+  <select id="findContentByUrl" parameterType="String" resultType="Integer">
+  	select id from app_content where filename = #{contentName}
+  </select>
+  
+  <select id="findContentNames" resultType="com.ss.pojo.app.AppData">
+  	SELECT ac.id, from app_file as af LEFT JOIN app_content as ac on af.filename = ac.filename where af.filename in 
+  	<foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+  		#{item}
+  	</foreach>
+  </select>
+  
+  <select id="findFileNameExist" resultType="com.ss.pojo.app.AppData">
+  	select id from app_content where filename in 
+  	<foreach collection="list" item="item" index="index" separator="," open="(" close= ")">
+  		#{item}
+  	</foreach>
+  </select>
+  
+  <select id="checkExistFileName" resultType="com.ss.pojo.app.AppData" parameterType="String">
+  	select id from app_content where filename = #{filename}
+  </select>
+  
+  <select id="getLastAliveWechat" resultType="com.ss.pojo.app.AppLog">
+  	SELECT id,wechat_id as wechatId,time FROM app_log log1
+    WHERE NOT EXISTS(
+    SELECT * FROM app_log log2 
+    WHERE log2.wechat_id= log1.wechat_id AND log2.time>log1.time)
+  </select>
+  
+  <insert id="insertErrorLog">
+  	insert into app_error_log values
+  	<foreach collection="list" separator="," item="item" index="index">
+  		(
+  			null,#{item.wechatId},#{item.time}
+  		)
+  	</foreach>
+  </insert>
+  <insert id="addGroupWechat" parameterType="com.ss.pojo.app.AppData">
+  	insert into app_content values
+  	<foreach collection="list" index="index" item="item" separator=",">
+  		(null,#{item.wechatId},#{item.content},#{item.type},#{item.time},#{item.appWechatId},#{item.owner},#{item.filename},#{item.wechatNameId},#{item.roomId})
+  	</foreach>
+  </insert>
+  
+  <insert id="addGroupRoom" parameterType="com.ss.pojo.app.AppRoom" useGeneratedKeys="true" keyProperty="id">
+  	insert into app_room values(null,#{roomName})
+  </insert>
+  
+  <insert id="addWechatName" parameterType="com.ss.pojo.app.AppRoom" useGeneratedKeys="true" keyProperty="id">
+  	insert into app_wechat_name values(null,#{wechat_nickname})
+  </insert>
+  
+  <select id="findRoomExist" parameterType="Integer" resultType="Integer">
+  	select id from app_room where id = #{roomId}
+  </select>
+</mapper>
